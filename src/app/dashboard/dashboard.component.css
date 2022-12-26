@@ -1,0 +1,28 @@
+.header{
+    background-image: linear-gradient(to right, #fc5c7d, #6a82fb);
+}
+
+.form-control::placeholder {
+    color: rgb(209, 209, 209);
+  }
+
+  /* width */
+::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #e0e0e0; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(175, 175, 175);
+    border-radius: 8px; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(139, 139, 139); 
+  }
