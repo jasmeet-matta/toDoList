@@ -62,26 +62,26 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  //method to edit an exising task
-  editTask(){
-    this.originalValue = this.editTaskValue;
-    if(this.editTaskValue == ''){
-      alert("Task name cannot be empty");
-      this.editTaskValue = this.originalValue; 
-    } else {
-      this.taskObj.task_name = this.editTaskValue;
-      this.crudService.editTask(this.taskObj).subscribe(res =>{
-        this.ngOnInit();
-      },err =>{
-        alert("Failed to update the task");
-
-        //condition added for code to work offline
-        if(err.status == 0){
-          this.taskObj.task_name = this.editTaskValue;
-          this.taskArray.push(this.taskObj);
-        }
-      })
-    }
+  //delete task popup confirmation
+  confirmDeleteTask(etask: Task, i:any){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to delete " + '- ' + etask.task_name + " ?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteTask(etask,i)
+        Swal.fire(
+          'Deleted!',
+          'Task has been deleted.',
+          'success'
+        )
+      }
+    })
   }
 
   //method to delete a task
