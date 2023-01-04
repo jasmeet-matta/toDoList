@@ -25,8 +25,8 @@
                             <div class="mt-2 col-md-8 border-0">
                                 {{task.task_name}}
                             </div>
-                            <button class="btn btn-outline-primary col me-2 body rounded" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="call(task)"><i class="fa-sharp fa-solid fa-pen-to-square"></i></button>
-                            <button class="btn btn-outline-danger col body rounded" (click)="deleteTask(task,i)"><i class="fa-sharp fa-solid fa-trash"></i></button>
+                            <button class="btn btn-outline-primary col me-2 body rounded" data-bs-toggle="modal" (click)="openEditTaskModal(task)"><i class="fa-sharp fa-solid fa-pen-to-square"></i></button>
+                            <button class="btn btn-outline-danger col body rounded" (click)="confirmDeleteTask(task,i)"><i class="fa-sharp fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -35,24 +35,7 @@
                 </div>
              </div>
             
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Edit Task</strong></h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="input-group p-4">
-                            <input type="text" class="form-control" name="task" [(ngModel)]="editTaskValue" placeholder="Update task">
-                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" (click)="editTask()">Update</button>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-                
+            </form>    
             </div>
             <div class="col"></div>
         </div>

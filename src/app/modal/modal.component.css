@@ -1,0 +1,8 @@
+button > .close,.pull-right {
+    background: none;
+    border: none;
+}
+
+.fa-xmark{
+    font-size: 1.2rem;
+}

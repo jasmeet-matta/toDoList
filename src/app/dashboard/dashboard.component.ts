@@ -3,6 +3,9 @@ import { Task } from '../model/task';
 import { CRUDService } from '../service/crud.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { BsModalRef, ModalOptions, BsModalService } from 'ngx-bootstrap/modal';
+import { ModalComponent } from '../modal/modal.component';
+
 
 @Component({
   selector: 'app-dashboard',

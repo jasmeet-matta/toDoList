@@ -1,0 +1,17 @@
+ <!-- Modal -->
+ <div class="modal-header">
+	<h4 class="modal-title ml-auto pl-5">
+	    <strong><span>Edit task</span></strong>
+  </h4>
+  <button type="button" class="close pull-right" (click)="onClose()">
+    <i class="fa-solid fa-xmark"></i>
+  </button> 
+</div>
+<div class="modal-body">
+    <form [formGroup]="taskForm">
+        <div class="input-group p-4">
+            <input type="text" class="form-control" formControlName="editTaskValue" name="task" placeholder="Update task">
+            <button type="button" class="btn btn-warning" [disabled]="!taskForm.valid" (click)="editTask()">Update</button>
+        </div>
+    </form>   
+</div>
