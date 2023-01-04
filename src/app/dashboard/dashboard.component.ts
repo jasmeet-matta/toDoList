@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../model/task';
 import { CRUDService } from '../service/crud.service';
+import * as alertifyjs from 'alertifyjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { BsModalRef, ModalOptions, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalComponent } from '../modal/modal.component';
 
 
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
   taskObj : Task = new Task();
   taskArray: Task[] = [];
   addTaskValue: string = '';
+
   private bsModalRef!: BsModalRef;
 
   //task field form initilization and validation
@@ -33,24 +35,16 @@ export class DashboardComponent implements OnInit {
 
   //method to add new task
   addTask(){
-    this.taskObj.task_name = this.addTaskValue;
-    if(this.addTaskValue == ''){
-      alert("Please enter a task");
-    } 
-    else {
+    this.taskObj = new Task();
+    let taskValue = JSON.parse(JSON.stringify(this.taskForm.value));
+    this.taskObj.task_name = taskValue.addTaskValue;
     this.crudService.addTask(this.taskObj).subscribe(res =>{
-        this.ngOnInit();
-        this.addTaskValue = '';
+    this.getAllTask();
+    this.taskForm.reset();
       },err =>{
-        alert("Could not add task");
-
-        //condition added for code to work offline
-        if(err.status == 0){
-          this.taskArray.push(this.taskObj);
-          this.addTaskValue = '';
-        }
+        alertifyjs.error("Could not add task");
       })
-    }
+    
   }
 
   //method to get task list
@@ -58,7 +52,7 @@ export class DashboardComponent implements OnInit {
     this.crudService.getAllTask().subscribe(res =>{
       this.taskArray = res;
     },err =>{
-      alert("Unable to get task list");
+      alertifyjs.error("Unable to get task list");
     })
   }
 
@@ -87,14 +81,9 @@ export class DashboardComponent implements OnInit {
   //method to delete a task
   deleteTask(etask: Task, i:any){
     this.crudService.deleteTask(etask).subscribe(res =>{
-      this.ngOnInit();
+    this.getAllTask();
     },err =>{
-      alert("Unable to delete task");
-      
-      //condition added for code to work offline
-      if(err.status == 0){
-        this.taskArray.splice(i,1)
-      }
+      alertifyjs.error("Unable to delete task");
     })
   }
 
@@ -111,8 +100,11 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  constructor(
+    private crudService: CRUDService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
+    ) { }
 
   ngOnInit(): void {
     this.createTaskField();
