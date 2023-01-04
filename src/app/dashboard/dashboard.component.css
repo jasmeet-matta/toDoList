@@ -26,3 +26,7 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgb(139, 139, 139); 
   }
+
+  .text-danger{
+    margin-top: -1rem;
+  }

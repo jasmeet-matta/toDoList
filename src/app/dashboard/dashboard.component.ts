@@ -11,9 +11,13 @@ import Swal from 'sweetalert2';
 })
 export class DashboardComponent implements OnInit {
 
+  taskForm!: FormGroup;
+
   taskObj : Task = new Task();
   taskArray: Task[] = [];
   addTaskValue: string = '';
+  private bsModalRef!: BsModalRef;
+
   //task field form initilization and validation
   createTaskField(){
     this.taskForm = this.formBuilder.group({
@@ -91,17 +95,25 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  //method to get value to edit task
-  call(etask: Task){
-    this.taskObj = etask;
-    this.editTaskValue = etask.task_name;
+  //method to open edit task modal
+  openEditTaskModal(task:any){
+    this.bsModalRef = this.modalService.show(ModalComponent, {
+      animated: true,
+      backdrop: true,
+      class: 'modal-md modal-dialog-centered',
+    });
+    (this.bsModalRef.content as ModalComponent).getEditTaskData(task);
+    (this.bsModalRef.content as ModalComponent).onCloseModal.subscribe(e => {
+      if (e) this.getAllTask();
+    })
   }
 
-  constructor(private crudService: CRUDService) { }
+    private formBuilder: FormBuilder,
+    private modalService: BsModalService,
 
   ngOnInit(): void {
+    this.createTaskField();
     this.addTaskValue = '';
-    this.editTaskValue = '';
     this.taskObj = new Task();
     this.taskArray = [];
     this.getAllTask();
