@@ -2,17 +2,18 @@
     <div class="container bg-light mt-5">
         <div class="row mt-4" style="height: 500px;">
             <div class="col"></div>
-            <div class="col-md-6 bg-light shadow-lg body rounded">
-                
+            <div class="col-md-6 bg-light shadow-lg body rounded" >
+            <form [formGroup]="taskForm">
              <div class="card header mt-3">
                 <h4 class="text-white ps-3 pb-2 pt-2 display-5"><strong>To-Do List</strong><i class="fa-solid fa-list ms-3 mt-3"></i></h4>
              </div>
 
              <div class="shadow">
                 <div class="input-group p-4">
-                    <input type="text" class="form-control" name="task" [(ngModel)]="addTaskValue" placeholder="Add new task">
-                    <button class="btn btn-outline-success" type="button" (click)="addTask()" (keyup.enter)="addTask()"><i class="fa-sharp fa-solid fa-plus"></i></button>
+                    <input type="text" class="form-control" formControlName="addTaskValue" name="task" placeholder="Add new task">
+                    <button class="btn btn-outline-success" type="button" [disabled]="!taskForm.valid" (click)="addTask()"><i class="fa-sharp fa-solid fa-plus"></i></button>
                 </div>
+                <div class="ps-4 pb-2 text-danger" *ngIf="taskvalue && taskvalue.invalid && taskvalue.touched"><strong>Task name is required</strong></div>
              </div>  
 
              <h4 class="text-info mt-4 ms-3"><strong>Tasks:</strong></h4>

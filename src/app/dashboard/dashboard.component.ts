@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../model/task';
 import { CRUDService } from '../service/crud.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +14,15 @@ export class DashboardComponent implements OnInit {
   taskObj : Task = new Task();
   taskArray: Task[] = [];
   addTaskValue: string = '';
-  editTaskValue: string = '';
-  originalValue: string = '';
+  //task field form initilization and validation
+  createTaskField(){
+    this.taskForm = this.formBuilder.group({
+      addTaskValue : ['',[Validators.required]],
+    })
+  }
+  get taskvalue(){
+    return this.taskForm.get('addTaskValue');
+  }
 
   //method to add new task
   addTask(){
