@@ -10,8 +10,8 @@
 <div class="modal-body">
     <form [formGroup]="taskForm">
         <div class="input-group p-4">
-            <input type="text" class="form-control" formControlName="editTaskValue" name="task" placeholder="Update task">
-            <button type="button" class="btn btn-warning" [disabled]="!taskForm.valid" (click)="editTask()">Update</button>
+            <input type="text" class="form-control" [(ngModel)]="editValue" (keyup)="checkEditValue()" formControlName="editTaskValue" name="task" placeholder="Update task">
+            <button type="button" class="btn btn-warning" [disabled]="!taskForm.valid || isValueSame" (click)="editTask()">Update</button>
         </div>
     </form>   
 </div>
