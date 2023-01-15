@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalComponent } from '../modal/modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -39,11 +40,10 @@ export class DashboardComponent implements OnInit {
     let taskValue = JSON.parse(JSON.stringify(this.taskForm.value));
     this.taskObj.task_name = taskValue.addTaskValue;
     this.crudService.addTask(this.taskObj).subscribe(res =>{
-    this.getAllTask();
-    this.taskForm.reset();
-      },err =>{
-        alertifyjs.error("Could not add task");
-      })
+      this.getAllTask();
+      this.toastr.success('New task has been added!');  
+      this.taskForm.reset();
+    })
     
   }
 
@@ -51,8 +51,6 @@ export class DashboardComponent implements OnInit {
   getAllTask(){
     this.crudService.getAllTask().subscribe(res =>{
       this.taskArray = res;
-    },err =>{
-      alertifyjs.error("Unable to get task list");
     })
   }
 
@@ -69,11 +67,6 @@ export class DashboardComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteTask(etask,i)
-        Swal.fire(
-          'Deleted!',
-          'Task has been deleted.',
-          'success'
-        )
       }
     })
   }
@@ -82,8 +75,11 @@ export class DashboardComponent implements OnInit {
   deleteTask(etask: Task, i:any){
     this.crudService.deleteTask(etask).subscribe(res =>{
     this.getAllTask();
-    },err =>{
-      alertifyjs.error("Unable to delete task");
+    Swal.fire(
+      'Deleted!',
+      'Task has been deleted.',
+      'success'
+    )
     })
   }
 
@@ -104,6 +100,7 @@ export class DashboardComponent implements OnInit {
     private crudService: CRUDService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
+    private toastr: ToastrService
     ) { }
 
   ngOnInit(): void {

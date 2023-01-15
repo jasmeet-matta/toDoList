@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalComponent } from './modal/modal.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { ModalComponent } from './modal/modal.component';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [BsModalService],
   bootstrap: [AppComponent]
