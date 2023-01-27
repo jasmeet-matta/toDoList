@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalComponent } from '../modal/modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { fromEvent, Observable, Subscription } from 'rxjs';
 
 
 @Component({
@@ -21,8 +22,17 @@ export class DashboardComponent implements OnInit {
   taskObj : Task = new Task();
   taskArray: Task[] = [];
   addTaskValue: string = '';
-
   private bsModalRef!: BsModalRef;
+  onlineEvent: Observable<Event> | undefined;
+  offlineEvent: Observable<Event> | undefined;
+  subscriptions: Subscription[] = [];
+  connectionStatusMessage: string | undefined;
+  connectionStatus: string | undefined;
+  toastrConfig = {
+    timeOut: 1000,
+    positionClass: 'toast-bottom-full-width',
+    easing: 'ease-in',
+  }
 
   //task field form initilization and validation
   createTaskField(){
@@ -96,6 +106,26 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  //Get the online/offline status from browser window
+  checkNetworkStatus(){      
+    this.onlineEvent = fromEvent(window, 'online');
+    this.offlineEvent = fromEvent(window, 'offline'); 
+
+    this.subscriptions.push(this.onlineEvent.subscribe(e => {
+      this.connectionStatusMessage = 'Back online!';
+      this.connectionStatus = 'online';
+      console.info('Online...');
+      this.toastr.success(this.connectionStatusMessage, '', this.toastrConfig)
+    }));  
+
+    this.subscriptions.push(this.offlineEvent.subscribe(e => {
+      this.connectionStatusMessage = 'Connection lost! You are not connected to internet';
+      this.connectionStatus = 'offline';
+      console.info('Offline...');
+      this.toastr.error(this.connectionStatusMessage, '', this.toastrConfig)
+    }));
+  }
+
   constructor(
     private crudService: CRUDService,
     private formBuilder: FormBuilder,
@@ -109,6 +139,11 @@ export class DashboardComponent implements OnInit {
     this.taskObj = new Task();
     this.taskArray = [];
     this.getAllTask();
+    this.checkNetworkStatus();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }
