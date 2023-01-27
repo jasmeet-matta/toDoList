@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
   subscriptions: Subscription[] = [];
   connectionStatusMessage: string | undefined;
   connectionStatus: string | undefined;
+  //network toaster config
   toastrConfig = {
     timeOut: 1000,
     positionClass: 'toast-bottom-full-width',
