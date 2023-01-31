@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit {
     this.taskObj = new Task();
     let taskValue = JSON.parse(JSON.stringify(this.taskForm.value));
     this.taskObj.task_name = taskValue.addTaskValue;
+    this.taskObj.isCompleted = false;
     this.crudService.addTask(this.taskObj).subscribe(res =>{
       this.getAllTask();
       this.toastr.success('New task has been added!');  
@@ -114,23 +115,36 @@ export class DashboardComponent implements OnInit {
     this.subscriptions.push(this.onlineEvent.subscribe(e => {
       this.connectionStatusMessage = 'Back online!';
       this.connectionStatus = 'online';
-      console.info('Online...');
+      console.warn('Online...');
       this.toastr.success(this.connectionStatusMessage, '', this.toastrConfig)
     }));  
 
     this.subscriptions.push(this.offlineEvent.subscribe(e => {
       this.connectionStatusMessage = 'Connection lost! You are not connected to internet';
       this.connectionStatus = 'offline';
-      console.info('Offline...');
+      console.error('Offline...');
       this.toastr.error(this.connectionStatusMessage, '', this.toastrConfig)
     }));
+  }
+
+  //Mark task as complete
+  completeTask(task:any, index:any){
+    task.isCompleted = true;
+    this.taskObj.isCompleted = true;
+    this.taskObj.id = task.id;
+    this.taskObj.task_name = task.task_name;
+    this.crudService.editTask(this.taskObj).subscribe(res => {
+      setTimeout(() => {
+        this.toastr.success('Yay! Task completed!');  
+      }, 200);
+    });
   }
 
   constructor(
     private crudService: CRUDService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
     ) { }
 
   ngOnInit(): void {

@@ -1,16 +1,39 @@
 {
   "tasks": [
     {
-      "id": 7,
-      "task_name": "task 1:48 AM"
+      "id": 6,
+      "task_name": "global error handling"
     },
     {
       "id": 8,
-      "task_name": "backdrop update"
+      "task_name": "ngx-toastr added add/update"
     },
     {
       "id": 9,
-      "task_name": "clean up code - dashboard TS"
+      "task_name": "interceptor added HTTP"
+    },
+    {
+      "id": 10,
+      "task_name": "imports removed from style.scss",
+      "isCompleted": true
+    },
+    {
+      "id": 11,
+      "task_name": "update btn disabled if org value"
+    },
+    {
+      "id": 12,
+      "task_name": "app online/offline status"
+    },
+    {
+      "id": 13,
+      "task_name": "some random task",
+      "isCompleted": true
+    },
+    {
+      "id": 14,
+      "task_name": "new task",
+      "isCompleted": true
     }
   ]
 }

@@ -20,10 +20,10 @@
             
              <div style="overflow-y: auto; max-height: 450px;">
                 <div class="m-3" *ngFor="let task of taskArray;let i = index">
-                    <div class="p-2 shadow border body rounded">
+                    <div class="p-2 shadow border body rounded" [ngClass]="task.isCompleted ? 'check' : ''">
                         <div class="input-group row ps-3">
                             <div class="mt-2 col-md-8 border-0">
-                                <b>{{task.task_name}}</b>
+                                <span [ngClass]="i % 2 === 0 ? 'red' : 'blue'" [ngStyle]="{'font-weight' : 'bold'}">{{task.task_name | textTransform}}<span class="ms-2"><i class="fa-solid fa-check" style="cursor: pointer;" (click)="completeTask(task,i)"></i></span></span>
                             </div>
                             <button class="btn btn-outline-primary col me-2 body rounded" data-bs-toggle="modal" (click)="openEditTaskModal(task)"><i class="fa-sharp fa-solid fa-pen-to-square"></i></button>
                             <button class="btn btn-outline-danger col body rounded" (click)="confirmDeleteTask(task,i)"><i class="fa-sharp fa-solid fa-trash"></i></button>

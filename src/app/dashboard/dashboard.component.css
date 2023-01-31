@@ -30,3 +30,15 @@
   .text-danger{
     margin-top: -1rem;
   }
+
+  .red{
+    color: #c45460 ;
+  }
+
+  .blue{
+    color: #3377df;
+  }
+
+  .check{
+    text-decoration: line-through;
+  }
