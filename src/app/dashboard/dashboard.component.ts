@@ -33,6 +33,9 @@ export class DashboardComponent implements OnInit {
     positionClass: 'toast-bottom-full-width',
     easing: 'ease-in',
   }
+  taskDone: boolean = false;
+  pendingTasks: any;
+  completedTasks: any;
 
   //task field form initilization and validation
   createTaskField(){
@@ -62,6 +65,9 @@ export class DashboardComponent implements OnInit {
   getAllTask(){
     this.crudService.getAllTask().subscribe(res =>{
       this.taskArray = res;
+      this.completedTasks = this.taskArray.filter((task:any) => task.isCompleted === true).length
+      this.pendingTasks = this.taskArray.filter((task:any) => task.isCompleted === undefined || task.isCompleted === false).length;
+      console.log(this.taskArray);
     })
   }
 
@@ -129,13 +135,15 @@ export class DashboardComponent implements OnInit {
 
   //Mark task as complete
   completeTask(task:any, index:any){
+    this.taskDone = true;
     task.isCompleted = true;
     this.taskObj.isCompleted = true;
     this.taskObj.id = task.id;
     this.taskObj.task_name = task.task_name;
     this.crudService.editTask(this.taskObj).subscribe(res => {
       setTimeout(() => {
-        this.toastr.success('Yay! Task completed!');  
+        this.toastr.success('Yay! Task completed!');
+        this.getAllTask();  
       }, 200);
     });
   }
