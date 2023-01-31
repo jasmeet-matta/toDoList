@@ -10,13 +10,15 @@ import { ModalComponent } from './modal/modal.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorInterceptor } from './http-error.interceptor';
+import { TextTransformPipe } from './pipe/text-transform.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    ModalComponent
+    ModalComponent,
+    TextTransformPipe
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { HttpErrorInterceptor } from './http-error.interceptor';
   ],
   providers: [ 
     {provide:HTTP_INTERCEPTORS, useClass:HttpErrorInterceptor, multi:true},
-    BsModalService
+    BsModalService,
+    TextTransformPipe
   ],
   bootstrap: [AppComponent]
 })
