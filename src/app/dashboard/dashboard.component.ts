@@ -67,7 +67,6 @@ export class DashboardComponent implements OnInit {
       this.taskArray = res;
       this.completedTasks = this.taskArray.filter((task:any) => task.isCompleted === true).length
       this.pendingTasks = this.taskArray.filter((task:any) => task.isCompleted === undefined || task.isCompleted === false).length;
-      console.log(this.taskArray);
     })
   }
 

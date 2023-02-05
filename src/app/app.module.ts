@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorInterceptor } from './http-error.interceptor';
 import { TextTransformPipe } from './pipe/text-transform.pipe';
+import { PreventSpecialCharsDirective } from './prevent-special-chars.directive';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { TextTransformPipe } from './pipe/text-transform.pipe';
     AppComponent,
     DashboardComponent,
     ModalComponent,
-    TextTransformPipe
+    TextTransformPipe,
+    PreventSpecialCharsDirective
   ],
   imports: [
     BrowserModule,

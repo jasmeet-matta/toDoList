@@ -6,20 +6,13 @@
     },
     {
       "id": 8,
-      "task_name": "ngx-toastr added add/update"
-    },
-    {
-      "id": 9,
-      "task_name": "interceptor added HTTP"
-    },
-    {
-      "id": 10,
-      "task_name": "imports removed from style.scss",
+      "task_name": "ngx-toastr added add/update",
       "isCompleted": true
     },
     {
-      "id": 11,
-      "task_name": "update btn disabled if org value"
+      "id": 9,
+      "task_name": "interceptor added HTTP",
+      "isCompleted": true
     },
     {
       "id": 12,
@@ -27,12 +20,22 @@
     },
     {
       "id": 13,
-      "task_name": "some random task",
-      "isCompleted": true
+      "task_name": "pipe transform added",
+      "isCompleted": false
     },
     {
       "id": 14,
-      "task_name": "new task",
+      "task_name": "ngClass ngStyle",
+      "isCompleted": true
+    },
+    {
+      "id": 15,
+      "task_name": "complete task functionality",
+      "isCompleted": true
+    },
+    {
+      "id": 16,
+      "task_name": "added directive",
       "isCompleted": true
     }
   ]

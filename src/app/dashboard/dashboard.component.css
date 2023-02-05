@@ -28,7 +28,7 @@
   }
 
   .text-danger{
-    margin-top: -1rem;
+    margin-top: -1.2rem;
   }
 
   .red{
@@ -41,4 +41,5 @@
 
   .check{
     text-decoration: line-through;
+    text-decoration-color: rgb(99, 99, 99);
   }

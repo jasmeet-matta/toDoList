@@ -10,7 +10,7 @@
 
              <div class="shadow">
                 <div class="input-group p-4">
-                    <input type="text" class="form-control" formControlName="addTaskValue" name="task" placeholder="Add new task">
+                    <input type="text" class="form-control" appPreventSpecialChars formControlName="addTaskValue" name="task" placeholder="Add new task">
                     <button class="btn btn-outline-success" type="button" [disabled]="!taskForm.valid" (click)="addTask()"><i class="fa-sharp fa-solid fa-plus"></i></button>
                 </div>
                 <div class="ps-4 pb-2 text-danger" *ngIf="taskvalue && taskvalue.invalid && taskvalue.touched"><strong>Task name is required</strong></div>
