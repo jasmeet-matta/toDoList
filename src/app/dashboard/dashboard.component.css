@@ -2,6 +2,12 @@
     background-image: linear-gradient(to right, #fc5c7d, #6a82fb);
 }
 
+.text-dark{
+  background: -webkit-linear-gradient(#c2c2c2, #313030);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .form-control::placeholder {
     color: rgb(209, 209, 209);
   }
@@ -41,5 +47,9 @@
 
   .check{
     text-decoration: line-through;
-    text-decoration-color: rgb(99, 99, 99);
+    text-decoration-color: rgb(245, 86, 86);
+  }
+
+  .badge{
+    opacity: 0.9;
   }

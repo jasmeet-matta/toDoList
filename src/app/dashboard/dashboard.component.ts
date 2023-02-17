@@ -135,13 +135,15 @@ export class DashboardComponent implements OnInit {
   //Mark task as complete
   completeTask(task:any, index:any){
     this.taskDone = true;
-    task.isCompleted = true;
-    this.taskObj.isCompleted = true;
+    task.isCompleted = !task.isCompleted;
+    this.taskObj.isCompleted = !this.taskObj.isCompleted;
     this.taskObj.id = task.id;
     this.taskObj.task_name = task.task_name;
     this.crudService.editTask(this.taskObj).subscribe(res => {
       setTimeout(() => {
-        this.toastr.success('Yay! Task completed!');
+        if(this.taskObj.isCompleted === true){
+          this.toastr.success('Yay! Task completed!');
+        }
         this.getAllTask();  
       }, 200);
     });
