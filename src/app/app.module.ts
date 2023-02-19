@@ -12,7 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorInterceptor } from './http-error.interceptor';
 import { TextTransformPipe } from './pipe/text-transform.pipe';
 import { PreventSpecialCharsDirective } from './prevent-special-chars.directive';
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DatePipe } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
+import { simpleReducer } from './simple.reducer';
 
 @NgModule({
   declarations: [
@@ -30,12 +33,15 @@ import { PreventSpecialCharsDirective } from './prevent-special-chars.directive'
     ReactiveFormsModule,
     ModalModule.forRoot(),
     ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    StoreModule.forRoot({ message: simpleReducer })
   ],
   providers: [ 
     {provide:HTTP_INTERCEPTORS, useClass:HttpErrorInterceptor, multi:true},
     BsModalService,
-    TextTransformPipe
+    TextTransformPipe,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

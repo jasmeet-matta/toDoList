@@ -9,14 +9,23 @@ import { Task } from '../model/task';
 export class CRUDService {
 
   public serviceURL: string;
+  public uploadURL: string;
 
   constructor(private http: HttpClient) { 
-    this.serviceURL = "http://localhost:3000/tasks"
+    this.serviceURL = "http://localhost:3000/tasks";
+    this.uploadURL =  "http://localhost:3000";
   }
 
   //method to add new task
   addTask(task: Task): Observable<Task>{
     return this.http.post<Task>(this.serviceURL, task);
+  }
+
+  //uploading file
+  fileUpload(file: File){
+    let formParams = new FormData();
+    formParams.append('file', file)
+    return this.http.post(this.uploadURL+'/uploads', formParams);
   }
 
   //method to get task list 

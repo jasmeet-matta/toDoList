@@ -7,8 +7,12 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalComponent } from '../modal/modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { fromEvent, Observable, Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
+import { Store } from '@ngrx/store';
 
-
+interface AppState {
+  message: string;
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -37,10 +41,60 @@ export class DashboardComponent implements OnInit {
   pendingTasks: any;
   completedTasks: any;
 
+  //Task type options
+  taskTypeArray = [
+    {id:1, type:"Note" ,color: '#ECF9FF'},
+    {id:2, type:"Note and Date", color: '#FFFBEB'},
+    {id:3, type:"Note, Date and Attachment", color: '#FFE7CC'}
+  ];
+
+  taskTypeValue:any = "Task type";
+  showDatePicker: boolean = false;
+  selectedDate!: Date;
+  taskDueDate!: string;
+  taskCreatedDate!: string;
+  minDate!: Date;
+  file!:File;
+  showFileUpload: boolean = false;
+  message$!: Observable<string>;
+
+
+  //choose type of task to be entered in todo
+  selectedTaskType() {
+    this.showFileUpload = this.taskTypeValue.id === 3;
+    this.showDatePicker = this.taskTypeValue.id === 2 || this.showFileUpload;
+  
+    const fileValidators = this.showFileUpload ? [Validators.required] : [];
+    const dateValidators = this.showDatePicker ? [Validators.required] : [];
+  
+    this.taskForm.controls['fileInput'].setValidators(fileValidators);
+    this.taskForm.controls['dueDateValue'].setValidators(dateValidators);
+    this.taskForm.controls['fileInput'].updateValueAndValidity();
+    this.taskForm.controls['dueDateValue'].updateValueAndValidity();
+  
+    this.taskObj.taskType = this.taskTypeValue.id;
+  }
+  
+  //getting task creation and due date for the current task
+  onDateSelection(event: any) {
+    this.taskDueDate = JSON.stringify(this.datePipe.transform(event, 'MMMM d, y'));
+    this.taskCreatedDate = JSON.stringify(this.datePipe.transform(new Date(), 'MMMM d, y'));
+  }
+
+  //getting attachment
+  getFile(event:any){
+    this.file = event.target.files[0];
+    this.crudService.fileUpload(this.file).subscribe((res)=>{
+      console.log(res);   
+    })
+  }
+
   //task field form initilization and validation
   createTaskField(){
     this.taskForm = this.formBuilder.group({
       addTaskValue : ['',[Validators.required]],
+      dueDateValue : [''],
+      fileInput: ['']
     })
   }
   get taskvalue(){
@@ -48,17 +102,24 @@ export class DashboardComponent implements OnInit {
   }
 
   //method to add new task
-  addTask(){
+  addTask() {
     this.taskObj = new Task();
-    let taskValue = JSON.parse(JSON.stringify(this.taskForm.value));
-    this.taskObj.task_name = taskValue.addTaskValue;
+    this.taskObj.task_name = this.taskForm.value.addTaskValue;
     this.taskObj.isCompleted = false;
-    this.crudService.addTask(this.taskObj).subscribe(res =>{
+    this.taskObj.taskCreatedDate = this.taskCreatedDate ?? '';
+    this.taskObj.taskDueDate = this.taskDueDate ? JSON.parse(this.taskDueDate ?? ''): '';
+    this.taskObj.taskType = this.taskTypeValue.id ?? 1;
+    
+    //saving task object in local storage
+    localStorage.setItem('task',JSON.stringify(this.taskObj));
+  
+    this.crudService.addTask(this.taskObj).subscribe(res => {
       this.getAllTask();
       this.toastr.success('New task has been added!');  
       this.taskForm.reset();
-    })
-    
+      this.showDatePicker = false;
+      this.showFileUpload = false;
+    });
   }
 
   //method to get task list
@@ -67,6 +128,11 @@ export class DashboardComponent implements OnInit {
       this.taskArray = res;
       this.completedTasks = this.taskArray.filter((task:any) => task.isCompleted === true).length
       this.pendingTasks = this.taskArray.filter((task:any) => task.isCompleted === undefined || task.isCompleted === false).length;
+    },(err)=>{
+      //getting data from local storage when JSON server is offline
+      const localTaskData = localStorage.getItem('task') || '{}';
+      let parsedData = JSON.parse(localTaskData);
+      this.taskArray.push(parsedData);
     })
   }
 
@@ -134,11 +200,15 @@ export class DashboardComponent implements OnInit {
 
   //Mark task as complete
   completeTask(task:any, index:any){
-    this.taskDone = true;
+    // task.isCompleted = true;
     task.isCompleted = !task.isCompleted;
     this.taskObj.isCompleted = !this.taskObj.isCompleted;
     this.taskObj.id = task.id;
     this.taskObj.task_name = task.task_name;
+    this.taskObj.taskCreatedDate = task.taskCreatedDate ? task.taskCreatedDate : ' ';
+    this.taskObj.taskDueDate = task.taskDueDate ? task.taskDueDate : ' ';
+    this.taskObj.attachment = this.file;
+    this.taskObj.taskType = task.taskType;
     this.crudService.editTask(this.taskObj).subscribe(res => {
       setTimeout(() => {
         if(this.taskObj.isCompleted === true){
@@ -154,7 +224,17 @@ export class DashboardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    ) { }
+    private datePipe: DatePipe,
+    private store: Store<AppState>){
+      this.message$ = this.store.select('message')
+    }
+  spanishMessage() {
+    this.store.dispatch({type: 'SPANISH'})
+  }
+
+  frenchMessage() {
+    this.store.dispatch({type: 'FRENCH'})
+  }
 
   ngOnInit(): void {
     this.createTaskField();
@@ -163,6 +243,7 @@ export class DashboardComponent implements OnInit {
     this.taskArray = [];
     this.getAllTask();
     this.checkNetworkStatus();
+    this.minDate = new Date();
   }
 
   ngOnDestroy(): void {

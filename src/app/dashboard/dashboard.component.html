@@ -2,8 +2,10 @@
     <div class="container bg-light mt-5">
         <div class="row mt-4" style="height: 500px;">
             <div class="col"></div>
-            <div class="col-md-6 bg-light shadow-lg body rounded" >
+            <div class="col-md-8 bg-light shadow-lg body rounded" >
+
             <form [formGroup]="taskForm">
+
              <div class="card header mt-3">
                 <h4 class="text-white ps-3 pb-2 pt-2 display-5">To-Do List<i class="fa-solid fa-list ms-3 mt-3"></i></h4>
              </div>
@@ -11,37 +13,74 @@
              <div class="shadow">
                 <div class="input-group p-4">
                     <input type="text" class="form-control" appPreventSpecialChars formControlName="addTaskValue" name="task" placeholder="Add new task">
+                    <select class="form-select" [(ngModel)]="taskTypeValue" [ngModelOptions]="{standalone: true}" (change)="selectedTaskType()" style="max-width: 200px;">
+                        <option selected disabled>Task type</option>
+                        <option *ngFor="let val of taskTypeArray" [ngStyle]="{'background-color': val.color}" [ngValue]="val">{{val.type}}</option>
+                      </select>
                     <button class="btn btn-outline-success" type="button" [disabled]="!taskForm.valid" (click)="addTask()"><i class="fa-sharp fa-solid fa-plus"></i></button>
                 </div>
-                <div class="ps-4 pb-2 text-danger" *ngIf="taskvalue && taskvalue.invalid && taskvalue.touched"><strong>Task name is required</strong></div>
+
+                <div class="ps-4 pb-2 text-danger" *ngIf="taskvalue && taskvalue.invalid && taskvalue.touched"><strong>Task name is required</strong>
+                </div>
+
+                <div class="input-group ps-4 pb-2" *ngIf="showDatePicker">
+                    <label class="center-label-date">Select task due date:&nbsp;</label>
+                    <div class="col-xs-12 col-12 col-md-4 form-group">
+                        <input type="text"
+                            placeholder="Select task due date"
+                            class="form-control"
+                            [(bsValue)]="selectedDate" (bsValueChange)="onDateSelection($event)"
+                            [minDate]="minDate"
+                            formControlName="dueDateValue"
+                            bsDatepicker>
+                      </div>
+                </div>
+                <div class="input-group ps-4 pb-2 pt-3" *ngIf="showFileUpload">
+                    <label class="center-label-date">Choose task attachment:&nbsp;</label>
+                    <input type="file" formControlName="fileInput" (change)="getFile($event)">
+                </div>
              </div>  
 
              <h4 class="text-dark mt-4 ms-3"><strong>Tasks:</strong></h4>
 
              <div *ngIf="taskArray.length">
-                <span class="badge text-bg-success ms-3 mb-2">Done:</span><span class="ms-2 fw-bold">{{completedTasks}}</span><span class="badge text-bg-warning ms-3">Pending:</span><span class="ms-2 fw-bold">{{pendingTasks}}</span>
+                <span class="badge text-bg-success ms-3 mb-2">Done:{{completedTasks}}</span><span class="badge text-bg-warning ms-3">Pending:{{pendingTasks}}</span>
             </div>
 
              <div style="overflow-y: auto; max-height: 450px;">
                 <div class="m-3" *ngFor="let task of taskArray;let i = index">
-                    <div class="p-2 shadow border body rounded-5" [ngClass]="task.isCompleted ? 'check' : ''">
+                    <div class="p-2 shadow border body rounded-5" [ngClass]="{'check':task.isCompleted,'task-1-style':task.taskType === 1,'task-2-style':task.taskType === 2,'task-3-style':task.taskType === 3}">
+
                         <div class="input-group row ps-3">
                             <div class="mt-2 col-md-8 border-0">
-                                <span [ngClass]="i % 2 === 0 ? 'red' : 'blue'" [ngStyle]="{'font-weight' : 'bold'}">{{task.task_name | textTransform}}<span class="ms-2"><i class="fa-solid fa-check" style="cursor: pointer;" (click)="completeTask(task,i)"></i></span></span>
+                                <span [ngClass]="i % 2 === 0 ? 'red' : 'blue'" [ngStyle]="{'font-weight' : 'bold'}">{{task.task_name | textTransform}}</span>
+
+                                <span class="ms-3" *ngIf="task.taskType === 2 || task.taskType === 3">Due date: {{task.taskDueDate}}</span>
+
+                                <span class="ms-2"><i class="fa-solid fa-check" style="cursor: pointer;" (click)="completeTask(task,i)"></i></span>
                             </div>
                             <button class="btn btn-outline-primary col me-2 body rounded-5" data-bs-toggle="modal" [disabled]="task.isCompleted" (click)="openEditTaskModal(task)"><i class="fa-sharp fa-solid fa-pen-to-square"></i></button>
+
                             <button class="btn btn-outline-danger col body rounded-5" (click)="confirmDeleteTask(task,i)"><i class="fa-sharp fa-solid fa-trash"></i></button>
                         </div>
+
                     </div>
                 </div>
+
                 <div *ngIf="taskArray.length <= 0" class="text-center mt-5">
                     <h6>No tasks to display...</h6>
                 </div>
-             </div>
-            
+
+             </div>  
+
             </form>    
             </div>
-            <div class="col"></div>
+            <div class="col hello-div">
+                <!-- <h4 class="text-dark mb-3">ngrx example</h4>
+                <h5 class="text-dark">{{ message$ | async }}</h5>
+                <button class="btn btn-outline-success mb-2" (click)="spanishMessage()">Spanish</button>
+                <button class="btn btn-outline-primary" (click)="frenchMessage()">French</button> -->
+            </div>
         </div>
     </div>
 </div>

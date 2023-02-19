@@ -53,3 +53,25 @@
   .badge{
     opacity: 0.9;
   }
+
+  .center-label-date{
+    display: flex;
+    align-items: center;
+  }
+  
+  .task-1-style{
+    background-color: #ECF9FF;
+  }
+  .task-2-style{
+    background-color: #FFFBEB;
+  }
+  .task-3-style{
+    background-color: #FFE7CC;
+  }
+
+  .hello-div{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+  }
