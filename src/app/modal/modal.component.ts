@@ -56,7 +56,7 @@ export class ModalComponent implements OnInit {
   //method to update a task
   editTask(){
     let editValue = JSON.parse(JSON.stringify(this.taskForm.value));
-    this.taskObj.id = this.taskID;
+    this.taskObj._id = this.taskID;
     this.taskObj.task_name = editValue.editTaskValue;
     this.taskObj.taskDueDate = this.taskDueDate;
     this.taskObj.taskCreatedDate = this.taskCreatedDate;

@@ -1,5 +1,5 @@
 export class Task {
-    id: number = 0;
+    _id!: number | undefined;
     task_name: string = '';
     isCompleted: boolean | undefined;
     taskType!: number | undefined;

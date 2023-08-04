@@ -12,13 +12,13 @@ export class CRUDService {
   public uploadURL: string;
 
   constructor(private http: HttpClient) { 
-    this.serviceURL = "http://localhost:3000/tasks";
+    this.serviceURL = "https://reliable-season-lantern.glitch.me";
     this.uploadURL =  "http://localhost:3000";
   }
 
   //method to add new task
   addTask(task: Task): Observable<Task>{
-    return this.http.post<Task>(this.serviceURL, task);
+    return this.http.post<Task>(this.serviceURL+'/addTask', task);
   }
 
   //uploading file
@@ -30,17 +30,17 @@ export class CRUDService {
 
   //method to get task list 
   getAllTask(): Observable<Task[]>{
-    return this.http.get<Task[]>(this.serviceURL);
+    return this.http.get<Task[]>(this.serviceURL+'/getTasks');
   }
 
   //method to delete a task
   deleteTask(task: Task): Observable<Task>{
-    return this.http.delete<Task>(this.serviceURL + '/' + task.id);
+    return this.http.delete<Task>(this.serviceURL+'/deleteTask/' + task._id);
   }
 
   //method to edit an exising task
   editTask(task: Task): Observable<Task>{
-    return this.http.put<Task>(this.serviceURL + '/' + task.id,task);
+    return this.http.put<Task>(this.serviceURL + '/' + task._id,task);
   }
 
 }

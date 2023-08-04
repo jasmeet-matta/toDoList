@@ -47,7 +47,7 @@
                 <span class="badge text-bg-success ms-3 mb-2">Done:{{completedTasks}}</span><span class="badge text-bg-warning ms-3">Pending:{{pendingTasks}}</span>
             </div>
 
-             <div style="overflow-y: auto; max-height: 450px;">
+             <div style="overflow-y: auto; max-height: 375px;">
                 <div class="m-3" *ngFor="let task of taskArray;let i = index">
                     <div class="p-2 shadow border body rounded-5" [ngClass]="{'check':task.isCompleted,'task-1-style':task.taskType === 1,'task-2-style':task.taskType === 2,'task-3-style':task.taskType === 3}">
 

@@ -2,7 +2,10 @@
   "tasks": [
     {
       "id": 6,
-      "task_name": "global error handling"
+      "task_name": "global error handling",
+      "isCompleted": true,
+      "taskCreatedDate": " ",
+      "taskDueDate": " "
     },
     {
       "id": 8,
@@ -16,12 +19,17 @@
     },
     {
       "id": 12,
-      "task_name": "app online/offline status"
+      "task_name": "app online/offline status",
+      "isCompleted": true,
+      "taskCreatedDate": " ",
+      "taskDueDate": " "
     },
     {
       "id": 13,
       "task_name": "pipe transform added",
-      "isCompleted": false
+      "isCompleted": true,
+      "taskCreatedDate": " ",
+      "taskDueDate": " "
     },
     {
       "id": 14,
@@ -35,8 +43,10 @@
     },
     {
       "id": 16,
-      "task_name": "added directive",
-      "isCompleted": true
+      "task_name": "added directive up",
+      "isCompleted": false,
+      "taskCreatedDate": " ",
+      "taskDueDate": " "
     }
   ]
 }
