@@ -39,8 +39,8 @@ export class CRUDService {
   }
 
   //method to edit an exising task
-  editTask(task: Task): Observable<Task>{
-    return this.http.put<Task>(this.serviceURL + '/' + task._id,task);
+  editTask(id:any,task: Task): Observable<Task>{
+    return this.http.put<Task>(this.serviceURL+ '/updateTask/'+id, task);
   }
 
 }

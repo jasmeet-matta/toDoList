@@ -43,7 +43,7 @@ export class ModalComponent implements OnInit {
     this.taskForm.patchValue({
       editTaskValue : task.task_name,
     });
-    this.taskID = task.id;
+    this.taskID = task._id;
     this.originalValue = task.task_name;
     this.taskDueDate = task.taskDueDate;
     this.taskCreatedDate = task.taskCreatedDate;
@@ -56,14 +56,14 @@ export class ModalComponent implements OnInit {
   //method to update a task
   editTask(){
     let editValue = JSON.parse(JSON.stringify(this.taskForm.value));
-    this.taskObj._id = this.taskID;
+    // this.taskObj._id = this.taskID;
     this.taskObj.task_name = editValue.editTaskValue;
     this.taskObj.taskDueDate = this.taskDueDate;
     this.taskObj.taskCreatedDate = this.taskCreatedDate;
     this.taskObj.isCompleted = this.isCompleted;
-    this.taskObj.attachment = this.attachment;
+    // this.taskObj.attachment = this.attachment;
     this.taskObj.taskType = this.taskType;
-    this.crudService.editTask(this.taskObj).subscribe(res =>{
+    this.crudService.editTask(this.taskID,this.taskObj).subscribe(res =>{
       this.taskForm.reset();
       this.onClose(true);
       setTimeout(() => {
