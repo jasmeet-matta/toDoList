@@ -43,4 +43,8 @@ export class CRUDService {
     return this.http.put<Task>(this.serviceURL+ '/updateTask/'+id, task);
   }
 
+  changeStatus(id:any,task:any): Observable<Task>{
+    return this.http.put<Task>(this.serviceURL+'/changeStatus/'+id,task);
+  }
+
 }

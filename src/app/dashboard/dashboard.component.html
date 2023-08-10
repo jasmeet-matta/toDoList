@@ -57,7 +57,7 @@
 
                                 <span class="ms-3" *ngIf="task.taskType === 2 || task.taskType === 3">Due date: {{task.taskDueDate}}</span>
 
-                                <span class="ms-2"><i class="fa-solid fa-check" style="cursor: pointer;" (click)="completeTask(task,i)"></i></span>
+                                <span class="ms-2"><i class="fa-solid fa-check" style="cursor: pointer;" (click)="confirmComplete(task)"></i></span>
                             </div>
                             <button class="btn btn-outline-primary col me-2 body rounded-5" data-bs-toggle="modal" [disabled]="task.isCompleted" (click)="openEditTaskModal(task)"><i class="fa-sharp fa-solid fa-pen-to-square"></i></button>
 

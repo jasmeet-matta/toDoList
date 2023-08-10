@@ -199,26 +199,31 @@ export class DashboardComponent implements OnInit {
     }));
   }
 
-  //Mark task as complete
-  completeTask(task:any, index:any){
-    // task.isCompleted = true;
+  confirmComplete(task:any){
     console.log(task);
-    task.isCompleted = !task.isCompleted;
-    this.taskObj.isCompleted = !this.taskObj.isCompleted;
-    this.taskObj._id = task.id;
-    this.taskObj.task_name = task.task_name;
-    this.taskObj.taskCreatedDate = task.taskCreatedDate ? task.taskCreatedDate : ' ';
-    this.taskObj.taskDueDate = task.taskDueDate ? task.taskDueDate : ' ';
-    this.taskObj.attachment = this.file;
-    this.taskObj.taskType = task.taskType;
-    // this.crudService.editTask(this.taskObj).subscribe(res => {
-    //   setTimeout(() => {
-    //     if(this.taskObj.isCompleted === true){
-    //       this.toastr.success('Yay! Task completed!');
-    //     }
-    //     this.getAllTask();  
-    //   }, 200);
-    // });
+    let status;
+    task.isCompleted == true ? status = 'incomplete' : status = 'complete';
+    Swal.fire({
+      title: `Mark task as ${status}?`,
+      icon: 'question',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.completeTask(task)
+      }
+    })
+  }
+
+  //Mark task as complete
+  completeTask(task:any){
+    // task.isCompleted = true;
+    let { _id,...otherFields } = task;
+    otherFields.isCompleted = !otherFields.isCompleted
+    let obj = {_id,...otherFields}
+    this.crudService.changeStatus(_id,obj).subscribe(res => {
+      let message = Object.values(res);
+        this.toastr.success(message[0]);
+        this.getAllTask();  
+    });
   }
 
   constructor(
