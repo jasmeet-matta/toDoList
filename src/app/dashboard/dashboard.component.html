@@ -6,8 +6,8 @@
 
             <form [formGroup]="taskForm">
 
-             <div class="card header mt-3">
-                <h4 class="text-white ps-3 pb-2 pt-2 display-5">To-Do List<i class="fa-solid fa-list ms-3 mt-3"></i></h4>
+             <div class="header mt-3">
+                <span class="text-white display-4 p-3 d-flex"><i class="fa-solid fa-list"></i>&nbsp;Todo List</span>
              </div>
 
              <div class="shadow">
@@ -17,7 +17,7 @@
                         <option selected disabled>Task type</option>
                         <option *ngFor="let val of taskTypeArray" [ngStyle]="{'background-color': val.color}" [ngValue]="val">{{val.type}}</option>
                       </select>
-                    <button class="btn btn-outline-success" type="button" [disabled]="!taskForm.valid" (click)="addTask()"><i class="fa-sharp fa-solid fa-plus"></i></button>
+                    <button class="btn add-btn" type="button" [disabled]="!taskForm.valid" (click)="addTask()"><i class="fa-sharp fa-solid fa-plus"></i></button>
                 </div>
 
                 <div class="ps-4 pb-2 text-danger" *ngIf="taskvalue && taskvalue.invalid && taskvalue.touched"><strong>Task name is required</strong>
@@ -41,17 +41,18 @@
                 </div>
              </div>  
 
-             <h4 class="text-dark mt-4 ms-3"><strong>Tasks:</strong></h4>
+             <!-- <h4 class="text-dark mt-4 ms-3"><strong>Tasks:</strong></h4> -->
 
-             <div *ngIf="taskArray.length">
-                <span class="badge text-bg-success ms-3 mb-2">Done:{{completedTasks}}</span><span class="badge text-bg-warning ms-3">Pending:{{pendingTasks}}</span>
+             <div *ngIf="taskArray.length" class="mt-4">
+                <span class="badge done-badge ms-3 mb-2">Done:{{completedTasks}}</span>
+                <span class="badge pending-badge ms-3">Pending:{{pendingTasks}}</span>
             </div>
 
              <div style="overflow-y: auto; max-height: 375px;">
                 <div class="m-3" *ngFor="let task of taskArray;let i = index">
-                    <div class="p-2 shadow border body rounded-5" [ngClass]="{'check':task.isCompleted,'task-1-style':task.taskType === 1,'task-2-style':task.taskType === 2,'task-3-style':task.taskType === 3}">
+                    <div class="p-2 shadow border body" [ngClass]="{'check':task.isCompleted,'task-1-style':task.taskType === 1,'task-2-style':task.taskType === 2,'task-3-style':task.taskType === 3}">
 
-                        <div class="input-group row ps-3">
+                        <div class="row ps-3">
                             <div class="mt-2 col-md-8 border-0">
                                 <span [ngClass]="i % 2 === 0 ? 'red' : 'blue'" [ngStyle]="{'font-weight' : 'bold'}">{{task.task_name | textTransform}}</span>
 
@@ -59,9 +60,12 @@
 
                                 <span class="ms-2"><i class="fa-solid fa-check" style="cursor: pointer;" (click)="confirmComplete(task)"></i></span>
                             </div>
-                            <button class="btn btn-outline-primary col me-2 body rounded-5" data-bs-toggle="modal" [disabled]="task.isCompleted" (click)="openEditTaskModal(task)"><i class="fa-sharp fa-solid fa-pen-to-square"></i></button>
+                            <!-- <div class="col"> -->
+                                <button class="btn btn-outline-danger body col me-3 p-2" type="button" (click)="confirmDeleteTask(task,i)"><i class="fa-sharp fa-solid fa-trash"></i></button>
 
-                            <button class="btn btn-outline-danger col body rounded-5" (click)="confirmDeleteTask(task,i)"><i class="fa-sharp fa-solid fa-trash"></i></button>
+                                <button class="btn btn-outline-primary me-3 col body p-2" type="button" data-bs-toggle="modal" [disabled]="task.isCompleted" (click)="openEditTaskModal(task)"><i class="fa-sharp fa-solid fa-pen-to-square"></i></button>
+                            <!-- </div> -->
+                            
                         </div>
 
                     </div>

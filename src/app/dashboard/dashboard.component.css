@@ -1,11 +1,6 @@
 .header{
-    background-image: linear-gradient(to right, #fc5c7d, #6a82fb);
-}
-
-.text-dark{
-  background: -webkit-linear-gradient(#c2c2c2, #313030);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-color: #FBDA61;
+  background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);
 }
 
 .form-control::placeholder {
@@ -48,6 +43,7 @@
   .check{
     text-decoration: line-through;
     text-decoration-color: rgb(245, 86, 86);
+    transition:ease-in 1s;
   }
 
   .badge{
@@ -60,10 +56,10 @@
   }
   
   .task-1-style{
-    background-color: #ECF9FF;
+    background-color: hsl(40, 95%, 90%);
   }
   .task-2-style{
-    background-color: #FFFBEB;
+    background-color: hsl(352, 100%, 95%);
   }
   .task-3-style{
     background-color: #FFE7CC;
@@ -74,4 +70,32 @@
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .btn{
+    border-radius: 0;
+  }
+  .btn:disabled{
+    background-color:rgb(250, 250, 250);
+  }
+
+  button:disabled:hover {
+    cursor: not-allowed;
+  }
+
+  .add-btn{
+    background-color: hsl(320, 100%, 80%);
+    border-radius: 0 5px 5px 0;
+  }
+
+  .done-badge{
+    background-color: hsl(352, 100%, 65%);
+  }
+  .pending-badge{
+    background-color: hsl(40, 95%, 60%);
+  }
+
+  .text-white{
+    place-items: center;
+    font-weight: 600;
   }
