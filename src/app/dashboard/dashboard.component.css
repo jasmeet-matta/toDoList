@@ -42,7 +42,7 @@
 
   .check{
     text-decoration: line-through;
-    text-decoration-color: rgb(245, 86, 86);
+    text-decoration-color: #333;
     transition:ease-in 1s;
   }
 

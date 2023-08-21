@@ -43,8 +43,8 @@ export class DashboardComponent implements OnInit {
 
   //Task type options
   taskTypeArray = [
-    {id:1, type:"Note" ,color: '#ECF9FF'},
-    {id:2, type:"Note and Date", color: '#FFFBEB'},
+    {id:1, type:"Note" ,color: 'hsl(40, 95%, 90%)'},
+    {id:2, type:"Note and Date", color: 'hsl(352, 100%, 95%)'},
     // {id:3, type:"Note, Date and Attachment", color: '#FFE7CC'}
   ];
 
