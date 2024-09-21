@@ -8,7 +8,6 @@ import { ModalComponent } from '../modal/modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { fromEvent, Observable, Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { Store } from '@ngrx/store';
 
 interface AppState {
   message: string;
@@ -110,9 +109,6 @@ export class DashboardComponent implements OnInit {
     this.taskObj.taskCreatedDate = this.taskCreatedDate;
     this.taskObj.taskDueDate = this.taskDueDate ? JSON.parse(this.taskDueDate ?? ''): '';
     this.taskObj.taskType = this.taskTypeValue.id ?? 1;
-    
-    //saving task object in local storage
-    // localStorage.setItem('task',JSON.stringify(this.taskObj));
   
     this.crudService.addTask(this.taskObj).subscribe(res => {
       this.getAllTask();
@@ -231,17 +227,8 @@ export class DashboardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private datePipe: DatePipe,
-    private store: Store<AppState>){
-      this.message$ = this.store.select('message')
+    private datePipe: DatePipe){
     }
-  spanishMessage() {
-    this.store.dispatch({type: 'SPANISH'})
-  }
-
-  frenchMessage() {
-    this.store.dispatch({type: 'FRENCH'})
-  }
 
   ngOnInit(): void {
     this.createTaskField();
