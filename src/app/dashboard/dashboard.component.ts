@@ -54,7 +54,6 @@ export class DashboardComponent implements OnInit {
   minDate!: Date;
   file!:File;
   showFileUpload: boolean = false;
-  message$!: Observable<string>;
 
   constructor(
     private crudService: CRUDService,
