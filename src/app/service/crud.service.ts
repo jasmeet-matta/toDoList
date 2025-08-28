@@ -11,12 +11,12 @@ export class CRUDService {
   public serviceURL: string;
   public uploadURL: string;
 
-  constructor(private http: HttpClient) { 
-    this.serviceURL = "https://reliable-season-lantern.glitch.me";
+  constructor(private http: HttpClient) {
+    this.serviceURL = "https://todo-apis-6frv.onrender.com";
     this.uploadURL =  "http://localhost:3000";
   }
 
-  //method to add new task
+  //method to add a new task
   addTask(task: Task): Observable<Task>{
     return this.http.post<Task>(this.serviceURL+'/addTask', task);
   }
@@ -28,7 +28,7 @@ export class CRUDService {
     return this.http.post(this.uploadURL+'/uploads', formParams);
   }
 
-  //method to get task list 
+  //method to get a task list
   getAllTask(): Observable<Task[]>{
     return this.http.get<Task[]>(this.serviceURL+'/getTasks');
   }

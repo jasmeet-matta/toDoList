@@ -43,8 +43,7 @@ export class DashboardComponent implements OnInit {
   //Task type options
   taskTypeArray = [
     {id:1, type:"Note" ,color: 'hsl(40, 95%, 90%)'},
-    {id:2, type:"Note and Date", color: 'hsl(352, 100%, 95%)'},
-    // {id:3, type:"Note, Date and Attachment", color: '#FFE7CC'}
+    {id:2, type:"Note and Date", color: 'hsl(352, 100%, 95%)'}
   ];
 
   taskTypeValue:any = "Task type";
@@ -57,23 +56,44 @@ export class DashboardComponent implements OnInit {
   showFileUpload: boolean = false;
   message$!: Observable<string>;
 
+  constructor(
+    private crudService: CRUDService,
+    private formBuilder: FormBuilder,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    private datePipe: DatePipe){
+  }
+
+  ngOnInit(): void {
+    this.createTaskField();
+    this.addTaskValue = '';
+    this.taskObj = new Task();
+    this.taskArray = [];
+    this.getAllTask();
+    this.checkNetworkStatus();
+    this.minDate = new Date();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 
   //choose type of task to be entered in todo
   selectedTaskType() {
     this.showFileUpload = this.taskTypeValue.id === 3;
     this.showDatePicker = this.taskTypeValue.id === 2 || this.showFileUpload;
-  
+
     const fileValidators = this.showFileUpload ? [Validators.required] : [];
     const dateValidators = this.showDatePicker ? [Validators.required] : [];
-  
+
     this.taskForm.controls['fileInput'].setValidators(fileValidators);
     this.taskForm.controls['dueDateValue'].setValidators(dateValidators);
     this.taskForm.controls['fileInput'].updateValueAndValidity();
     this.taskForm.controls['dueDateValue'].updateValueAndValidity();
-  
+
     this.taskObj.taskType = this.taskTypeValue.id;
   }
-  
+
   //getting task creation and due date for the current task
   onDateSelection(event: any) {
     this.taskDueDate = JSON.stringify(this.datePipe.transform(event, 'MMMM d, y'));
@@ -85,7 +105,7 @@ export class DashboardComponent implements OnInit {
   getFile(event:any){
     this.file = event.target.files[0];
     this.crudService.fileUpload(this.file).subscribe((res)=>{
-      console.log(res);   
+      console.log(res);
     })
   }
 
@@ -101,7 +121,7 @@ export class DashboardComponent implements OnInit {
     return this.taskForm.get('addTaskValue');
   }
 
-  //method to add new task
+  //method to add a new task
   addTask() {
     this.taskObj = new Task();
     this.taskObj.task_name = this.taskForm.value.addTaskValue;
@@ -109,10 +129,10 @@ export class DashboardComponent implements OnInit {
     this.taskObj.taskCreatedDate = this.taskCreatedDate;
     this.taskObj.taskDueDate = this.taskDueDate ? JSON.parse(this.taskDueDate ?? ''): '';
     this.taskObj.taskType = this.taskTypeValue.id ?? 1;
-  
+
     this.crudService.addTask(this.taskObj).subscribe(res => {
       this.getAllTask();
-      this.toastr.success('New task has been added!');  
+      this.toastr.success('New task has been added!');
       this.taskForm.reset();
       this.showDatePicker = false;
       this.showFileUpload = false;
@@ -126,10 +146,6 @@ export class DashboardComponent implements OnInit {
       this.completedTasks = this.taskArray.filter((task:any) => task.isCompleted === true).length
       this.pendingTasks = this.taskArray.filter((task:any) => task.isCompleted === undefined || task.isCompleted === false).length;
     },(err)=>{
-      //getting data from local storage when JSON server is offline
-      // const localTaskData = localStorage.getItem('task') || '{}';
-      // let parsedData = JSON.parse(localTaskData);
-      // this.taskArray.push(parsedData);
     })
   }
 
@@ -176,16 +192,16 @@ export class DashboardComponent implements OnInit {
   }
 
   //Get the online/offline status from browser window
-  checkNetworkStatus(){      
+  checkNetworkStatus(){
     this.onlineEvent = fromEvent(window, 'online');
-    this.offlineEvent = fromEvent(window, 'offline'); 
+    this.offlineEvent = fromEvent(window, 'offline');
 
     this.subscriptions.push(this.onlineEvent.subscribe(e => {
       this.connectionStatusMessage = 'Back online!';
       this.connectionStatus = 'online';
       console.warn('Online...');
       this.toastr.success(this.connectionStatusMessage, '', this.toastrConfig)
-    }));  
+    }));
 
     this.subscriptions.push(this.offlineEvent.subscribe(e => {
       this.connectionStatusMessage = 'Connection lost! You are not connected to internet';
@@ -196,7 +212,6 @@ export class DashboardComponent implements OnInit {
   }
 
   confirmComplete(task:any){
-    console.log(task);
     let status;
     task.isCompleted == true ? status = 'incomplete' : status = 'complete';
     Swal.fire({
@@ -211,37 +226,13 @@ export class DashboardComponent implements OnInit {
 
   //Mark task as complete
   completeTask(task:any){
-    // task.isCompleted = true;
     let { _id,...otherFields } = task;
     otherFields.isCompleted = !otherFields.isCompleted
     let obj = {_id,...otherFields}
     this.crudService.changeStatus(_id,obj).subscribe(res => {
       let message = Object.values(res);
         this.toastr.success(message[0]);
-        this.getAllTask();  
+        this.getAllTask();
     });
   }
-
-  constructor(
-    private crudService: CRUDService,
-    private formBuilder: FormBuilder,
-    private modalService: BsModalService,
-    private toastr: ToastrService,
-    private datePipe: DatePipe){
-    }
-
-  ngOnInit(): void {
-    this.createTaskField();
-    this.addTaskValue = '';
-    this.taskObj = new Task();
-    this.taskArray = [];
-    this.getAllTask();
-    this.checkNetworkStatus();
-    this.minDate = new Date();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
 }
