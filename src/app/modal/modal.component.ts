@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  
+
   public onCloseModal : Subject<any> = new Subject();
 
   taskForm!: FormGroup;
@@ -37,7 +37,7 @@ export class ModalComponent implements OnInit {
       editTaskValue: ['',Validators.required],
     })
   }
-  
+
   //patch task value to edit field
   getEditTaskData(task:any){
     this.taskForm.patchValue({
@@ -67,18 +67,14 @@ export class ModalComponent implements OnInit {
       this.taskForm.reset();
       this.onClose(true);
       setTimeout(() => {
-        this.toastr.success('Task updated successfully');  
+        this.toastr.success('Task updated successfully');
       }, 500);
     })
   }
 
   //disables update button if same as original value
   checkEditValue(){
-    if(this.originalValue === this.editValue){
-      this.isValueSame = true;
-    }else{
-      this.isValueSame = false;
-    }
+    this.isValueSame = this.originalValue === this.editValue;
   }
 
   constructor(
@@ -88,9 +84,9 @@ export class ModalComponent implements OnInit {
     private toastr: ToastrService
     ) { }
 
-  //to close the modal  
+  //to close the modal
   onClose(refresh?: boolean) {
     this.bsModalRef.hide();
     this.onCloseModal.next(refresh || false);
-  } 
+  }
 }
